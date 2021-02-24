@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:none;stroke:#000000;stroke-width:16;stroke-linejoin:round;stroke-miterlimit:10;}
+</style>
+<g>
+	<path class="st0" d="M64,408c-13.4,0-27.2-15.2-37.8-41.8C14.5,336.9,8,297.7,8,256s6.5-80.9,18.2-110.2
+		C36.8,119.2,50.6,104,64,104h384c13.4,0,27.2,15.2,37.8,41.8C497.5,175.1,504,214.3,504,256c0,41.7-6.5,80.9-18.2,110.2
+		C475.2,392.8,461.4,408,448,408H64z"/>
+	<path d="M448,112c9.5,0,21.5,14.4,30.4,36.8C489.7,177.2,496,215.2,496,256s-6.3,78.8-17.6,107.2c-8.9,22.4-20.9,36.8-30.4,36.8H64
+		c-9.5,0-21.5-14.4-30.4-36.8C22.3,334.8,16,296.8,16,256s6.3-78.8,17.6-107.2C42.5,126.4,54.5,112,64,112H448 M448,96H64
+		C28.7,96,0,167.6,0,256s28.7,160,64,160h384c35.3,0,64-71.6,64-160S483.3,96,448,96L448,96z"/>
+</g>
+<path class="st1" d="M73.5,272h55.1v-47h47v109h47V178h63l1,141h47v-94h50v47h55"/>
+</svg>

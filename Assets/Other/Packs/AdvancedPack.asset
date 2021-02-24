@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f03e93f54c39134eb885aadd1b67afd, type: 3}
+  m_Name: AdvancedPack
+  m_EditorClassIdentifier: 
+  _components:
+  - {fileID: 745165171941768859, guid: 1fc4db327da2a7f4b92eb12724e8feec, type: 3}
+  - {fileID: 8410630340230620203, guid: 1d5c0f39a6c53034d8c3c141f56d44e3, type: 3}
+  - {fileID: 1751939257908961259, guid: 6a9da18ad2e724144b188b4fdac91f79, type: 3}
+  - {fileID: 7478687440578486580, guid: 07882ce163bae0a4b8a39040b70ae44a, type: 3}
