@@ -1532,6 +1532,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 887c1597b3be0184d85426300d345297, type: 2}
   - {fileID: 11400000, guid: e4914b7004f58414b81b1642f1bebc00, type: 2}
   - {fileID: 11400000, guid: 5ad1e76362423f943a8cc15d9e5d39e0, type: 2}
+  - {fileID: 11400000, guid: 8df2cbe20c4008a40a3b0ce4abacf074, type: 2}
 --- !u!222 &2077077125
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1701,7 +1702,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8793008131614959582, guid: 77506d591bc58ee4cb7c464178f74bea, type: 3}
       propertyPath: m_LocalScale.x
-      value: 41.592594
+      value: 40.136612
       objectReference: {fileID: 0}
     - target: {fileID: 8793008131614959582, guid: 77506d591bc58ee4cb7c464178f74bea, type: 3}
       propertyPath: m_LocalScale.y

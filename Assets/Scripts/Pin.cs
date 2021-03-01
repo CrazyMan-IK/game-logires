@@ -20,7 +20,7 @@ namespace CrazyGames.Logires
         protected SpriteRenderer _renderer = null;
         protected LineAnchorer _line = null;
         protected Camera _mainCamera = null;
-        protected List<Pin> _linkedPins = new List<Pin>();
+        protected ObservableCollection<Pin> _linkedPins = new ObservableCollection<Pin>();
 
         private LineRenderer _lineRenderer = null;
 
@@ -104,6 +104,16 @@ namespace CrazyGames.Logires
 
         public abstract Color GetCurrentColor();
 
+        public virtual bool CanConnect(Pin other)
+        {
+            if (other.GetType().GetMethod(nameof(CanConnect)).DeclaringType == typeof(Pin))
+            {
+                return true;
+            }
+
+            return other.CanConnect(this);
+        }
+
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (IsInput)
@@ -151,7 +161,6 @@ namespace CrazyGames.Logires
 
             SetPosition(Vector2.zero);
         }
-
         
         public void OnDrop(PointerEventData eventData)
         {

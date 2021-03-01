@@ -23,22 +23,25 @@ namespace CrazyGames.Logires
         {
             serializedObject.Update();
             EditorGUILayout.PropertyField(_isInputProperty);
-            EditorGUILayout.PropertyField(_defaultValueProperty);
-            EditorGUI.BeginDisabledGroup(true);
-            if (_defaultValueProperty.isArray && _defaultValueProperty.arrayElementType == "bool")
+            if (_defaultValueProperty != null)
             {
-                string bits = "";
-                for (int i = 0; i < _valueProperty.arraySize; i++)
+                EditorGUILayout.PropertyField(_defaultValueProperty);
+                EditorGUI.BeginDisabledGroup(true);
+                if (_defaultValueProperty.isArray && _defaultValueProperty.arrayElementType == "bool")
                 {
-                    bits += _valueProperty.GetArrayElementAtIndex(i).boolValue ? "1" : "0";
+                    string bits = "";
+                    for (int i = 0; i < _valueProperty.arraySize; i++)
+                    {
+                        bits += _valueProperty.GetArrayElementAtIndex(i).boolValue ? "1" : "0";
+                    }
+                    EditorGUILayout.TextField(bits);
                 }
-                EditorGUILayout.TextField(bits);
+                else
+                {
+                    EditorGUILayout.PropertyField(_valueProperty);
+                }
+                EditorGUI.EndDisabledGroup();
             }
-            else
-            {
-                EditorGUILayout.PropertyField(_valueProperty);
-            }
-            EditorGUI.EndDisabledGroup();
             serializedObject.ApplyModifiedProperties();
         }
     }
