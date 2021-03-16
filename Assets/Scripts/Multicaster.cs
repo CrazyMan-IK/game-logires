@@ -13,7 +13,7 @@ using CrazyGames.Logires.Models;
 
 namespace CrazyGames.Logires
 {
-    public class Multicaster : MonoBehaviour
+    public class Multicaster
     {
         public static readonly int port = 43662;
         public static readonly IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, port);
@@ -33,15 +33,14 @@ namespace CrazyGames.Logires
             {
                 if (_instance == null)
                 {
-                    var newInstance = new GameObject("Multicaster").AddComponent<Multicaster>();
-                    _instance = newInstance;
+                    _instance = new Multicaster();
                 }
 
                 return _instance;
             }
         }
 
-        private void Awake()
+        private Multicaster()
         {
             _client = new UdpClient(port);
             _client.JoinMulticastGroup(multicastAddress);
@@ -49,7 +48,7 @@ namespace CrazyGames.Logires
             _client.BeginReceive(ReceiveCallback, null);
         }
 
-        private void OnDestroy()
+        ~Multicaster()
         {
             if (_client != null)
             {
