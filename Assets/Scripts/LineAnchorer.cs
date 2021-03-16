@@ -37,23 +37,31 @@ namespace CrazyGames.Logires
 
         private void UpdatePositions()
         {
+            Vector3 oldPos1 = _line.GetPosition(0);
+            Vector3 oldPos2 = _line.GetPosition(1);
+
+            Vector3 pos1, pos2;
+
             if (_target1 == null)
             {
-                _line.SetPosition(0, transform.position + _position1);
+                pos1 = _transform.position + _position1;
             }
             else
             {
-                _line.SetPosition(0, _target1.position);
+                pos1 = _target1.position;
             }
 
             if (_target2 == null)
             {
-                _line.SetPosition(1, transform.position + _position2);
+                pos2 = _transform.position + _position2;
             }
             else
             {
-                _line.SetPosition(1, _target2.position);
+                pos2 = _target2.position;
             }
+
+            _line.SetPosition(0, Vector3.Lerp(oldPos1, pos1, Time.deltaTime * 50));
+            _line.SetPosition(1, Vector3.Lerp(oldPos2, pos2, Time.deltaTime * 50));
         }
     }
 }

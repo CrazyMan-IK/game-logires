@@ -38,7 +38,7 @@ namespace CrazyGames.Logires
                     {
                         pin1.Value = val1;
                     }
-                    else if (currentValue is int && linkedPin is BitPin pin2)
+                    else if ((currentValue is bool || currentValue is int) && linkedPin is BitPin pin2)
                     {
                         int val = Convert.ToInt32(currentValue);
 
@@ -70,11 +70,6 @@ namespace CrazyGames.Logires
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
                 OnValueChanged(Value, Value);
-            }
-
-            if (IsInput && _linkedPins.Count == 0)
-            {
-                Value = _defaultValue;
             }
         }
 
@@ -112,7 +107,7 @@ namespace CrazyGames.Logires
         }
         public override bool CanConnect(Pin other)
         {
-            return !IsInput && base.CanConnect(other);
+            return other.GetType() == typeof(IteratorPin) || !IsInput;
         }
 
         public override LinkedListNode<object> GetBaseValue()

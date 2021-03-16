@@ -23,6 +23,8 @@ namespace CrazyGames.Logires
         {
             if (Input.GetKeyUp(KeyCode.Escape))
             {
+                Generator.StopTicker();
+
                 SaveLevel();
                 SceneManager.LoadScene(0);
             }

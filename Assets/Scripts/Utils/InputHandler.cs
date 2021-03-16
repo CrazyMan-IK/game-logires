@@ -88,13 +88,16 @@ namespace CrazyGames.Logires.Utils
             int curTouches = Input.touchCount - 1;
             if (curTouches <= 0)
             {
-                _movingInput = eventData.delta;
-
-                int count = _movingAcceleration.Count;
-                for (int i = 0; i < count; i++)
+                if (eventData.IsPointerMoving())
                 {
-                    _movingAcceleration.TryDequeue(out var moving);
-                    _movingInput += moving;
+                    _movingInput = eventData.delta;
+
+                    int count = _movingAcceleration.Count;
+                    for (int i = 0; i < count; i++)
+                    {
+                        _movingAcceleration.TryDequeue(out var moving);
+                        _movingInput += moving;
+                    }
                 }
                 
                 OnMoved?.Invoke(MovingDirection, CurrentState.End);

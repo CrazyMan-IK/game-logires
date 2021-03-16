@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CrazyGames.Logires.UI;
 
 namespace CrazyGames.Logires
 {
@@ -10,6 +11,7 @@ namespace CrazyGames.Logires
     {
         [SerializeField] private Transform _savesRoot = null;
         [SerializeField] private SchemeSaveUI _schemePrefab = null;
+        [SerializeField] private Store _store = null;
         
         private void Awake()
         {
@@ -37,7 +39,14 @@ namespace CrazyGames.Logires
         {
             if (Input.GetKeyUp(KeyCode.Escape))
             {
-                Application.Quit();
+                if (_store != null && _store.IsOpened)
+                {
+                    _store.IsOpened = false;
+                }
+                else
+                {
+                    Application.Quit();
+                }
             }
         }
 
@@ -45,6 +54,8 @@ namespace CrazyGames.Logires
         {
             Saver.Instance.CurrentLevelMetadata.Title = "New";
             sender.Title = "New";
+
+            //Saver.Instance.Save();
         }
 
         public void LoadNewSave()

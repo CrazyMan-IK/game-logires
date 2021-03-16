@@ -1,18 +1,53 @@
 using System;
 using System.Linq;
 using System.Collections;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
+using DG.Tweening;
+using CrazyGames.Logires.UI;
 
 namespace CrazyGames.Logires
 {
+    [RequireComponent(typeof(CanvasGroup))]
     public class Store : MonoBehaviour, IStoreListener
     {
-        private const string _ProductIDSystemSet = "system_set";
+        private readonly string[] _Consumables = { "system_set" };
+        private readonly string[] _NonConsumables = { };
+        private ReadOnlyCollection<string> _AllProducts = null;
+        
+        [SerializeField] private Transform _itemsHolder = null;
+        [SerializeField] private PurchaseItemUI _purchaseItemPrefab = null;
 
-        private IStoreController _storeController;
-        private IExtensionProvider _storeExtensionProvider;
+        private IStoreController _storeController = null;
+        private IExtensionProvider _storeExtensionProvider = null;
+        private CanvasGroup _canvasGroup = null;
+
+        private bool _isOpened = false;
+
+        public bool IsOpened
+        {
+            get { return _isOpened; }
+            set
+            {
+                if (_isOpened != value)
+                {
+                    _isOpened = value;
+
+                    _canvasGroup.DOFade(Convert.ToInt32(_isOpened), 0.5f);
+                    _canvasGroup.interactable = _isOpened;
+                    _canvasGroup.blocksRaycasts = _isOpened;
+                }
+            }
+        }
+
+        private void Awake()
+        {
+            _canvasGroup = GetComponent<CanvasGroup>();
+
+            _AllProducts = _Consumables.Concat(_NonConsumables).ToList().AsReadOnly();
+        }
 
         private void Start()
         {
@@ -22,12 +57,15 @@ namespace CrazyGames.Logires
             }
         }
 
-        private void BuyProductID(string productId)
+        private void RestorePurchasesCallback(bool result)
+        {
+            Debug.Log("RestorePurchases continuing: " + result + ". If no further messages, no purchases available to restore");
+        }
+
+        public void BuyProduct(Product product)
         {
             if (IsInitialized())
             {
-                Product product = _storeController.products.WithID(productId);
-
                 if (product != null && product.availableToPurchase)
                 {
                     Debug.Log($"Purchasing product asychronously: '{product.definition.id}'");
@@ -44,9 +82,17 @@ namespace CrazyGames.Logires
             }
         }
 
-        private void RestorePurchasesCallback(bool result)
+        public void BuyProductID(string productId)
         {
-            Debug.Log("RestorePurchases continuing: " + result + ". If no further messages, no purchases available to restore");
+            if (IsInitialized())
+            {
+                Product product = _storeController.products.WithID(productId);
+                BuyProduct(product);
+            }
+            else
+            {
+                Debug.Log("BuyProductID FAIL. Not initialized");
+            }
         }
 
         public void InitializePurchasing()
@@ -58,19 +104,31 @@ namespace CrazyGames.Logires
 
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
 
-            builder.AddProduct(_ProductIDSystemSet, ProductType.Consumable);
+            foreach (var product in _Consumables)
+            {
+                builder.AddProduct(product, ProductType.Consumable);
+            }
+            foreach (var product in _NonConsumables)
+            {
+                builder.AddProduct(product, ProductType.NonConsumable);
+            }
 
             UnityPurchasing.Initialize(this, builder);
         }
 
-        private bool IsInitialized()
+        public bool IsInitialized()
         {
             return _storeController != null && _storeExtensionProvider != null;
         }
 
-        public void BuySystemSet()
+        public void Show()
         {
-            BuyProductID(_ProductIDSystemSet);
+            IsOpened = true;
+        }
+
+        public void Hide()
+        {
+            IsOpened = false;
         }
 
         public void RestorePurchases()
@@ -100,6 +158,16 @@ namespace CrazyGames.Logires
 
             _storeController = controller;
             _storeExtensionProvider = extensions;
+
+            if (_purchaseItemPrefab != null && _itemsHolder != null)
+            {
+                foreach (var product in controller.products.set)
+                {
+                    var item = Instantiate(_purchaseItemPrefab, _itemsHolder);
+                    item.Product = product;
+                    item.PurchaseRequest += BuyProduct;
+                }
+            }
         }
 
         public void OnInitializeFailed(InitializationFailureReason error)
@@ -114,11 +182,18 @@ namespace CrazyGames.Logires
 
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
         {
-            if (string.Equals(purchaseEvent.purchasedProduct.definition.id, _ProductIDSystemSet, StringComparison.Ordinal))
+            if (_AllProducts.Contains(purchaseEvent.purchasedProduct.definition.id, StringComparer.Ordinal))
             {
                 Debug.Log($"ProcessPurchase: PASS. Product: '{purchaseEvent.purchasedProduct.definition.id}'");
 
-                Utils.AndroidNativeWrapper.CallMethod("ShowToast", new object[] { purchaseEvent.purchasedProduct.definition.id, 0 });
+                switch (purchaseEvent.purchasedProduct.definition.id)
+                {
+                    case "system_set":
+                        {
+                            Utils.AndroidNativeWrapper.CallMethod("ShowToast", new object[] { purchaseEvent.purchasedProduct.definition.id, 0 });
+                            break;
+                        }
+                }
             }
             else
             {

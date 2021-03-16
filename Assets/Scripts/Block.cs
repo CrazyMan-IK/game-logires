@@ -4,8 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using CrazyGames.Logires.UI;
 using CrazyGames.Logires.Utils;
 using CrazyGames.Logires.Interfaces;
 
@@ -199,6 +201,12 @@ namespace CrazyGames.Logires
                 }
 
                 _transform.position = _lastFreePos.Value;
+
+                Analytics.CustomEvent("block_pasted", new Dictionary<string, object>
+                {
+                    { "type_name", GetType().Name },
+                    { "id", GetID() }
+                });
             }
             else
             {

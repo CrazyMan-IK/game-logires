@@ -23,13 +23,14 @@ namespace CrazyGames.Logires.Utils
         private Tween _movingTween = null;
         private Camera _mainCamera = null;
         private Transform _mainCameraTransform = null;
-        private Vector3 _targetPoint = Vector3.zero;
+
+        public Vector3 TargetPoint { get; set; } = Vector3.zero;
 
         private void Awake()
         {
             _mainCamera = Camera.main;
             _mainCameraTransform = _mainCamera.transform;
-            _targetPoint = _mainCameraTransform.position;
+            TargetPoint = _mainCameraTransform.position;
         }
 
         private void OnEnable()
@@ -57,7 +58,7 @@ namespace CrazyGames.Logires.Utils
 
         private void LateUpdate()
         {
-            _mainCameraTransform.position = Vector3.Lerp(_mainCameraTransform.position, _targetPoint, Time.deltaTime * 500);
+            _mainCameraTransform.position = Vector3.Lerp(_mainCameraTransform.position, TargetPoint, Time.deltaTime * 500);
         }
 
         private void OnMoved(Vector2 delta, CurrentState state)
@@ -74,11 +75,11 @@ namespace CrazyGames.Logires.Utils
             }
             else if (state == CurrentState.Change)
             {
-                _targetPoint -= (Vector3)delta * Time.deltaTime;
+                TargetPoint -= (Vector3)delta * Time.deltaTime;
             }
             else if (state == CurrentState.End && endDelta.magnitude > 3.5f)
             {
-                _movingTween = DOTween.To(() => _targetPoint, value => _targetPoint = value, _targetPoint - (Vector3)endDelta, 1.0f).SetEase(Ease.OutCubic);
+                _movingTween = DOTween.To(() => TargetPoint, value => TargetPoint = value, TargetPoint - (Vector3)endDelta, 1.0f).SetEase(Ease.OutCubic);
             }
         }
 

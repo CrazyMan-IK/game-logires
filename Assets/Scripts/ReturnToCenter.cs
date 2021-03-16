@@ -28,10 +28,11 @@ namespace CrazyGames.Logires
         {
             if (_lastTween == null || _lastTween.IsComplete())
             {
-                _mainCamera.GetComponent<FreeCamera>().StopMoving();
+                var freeCam = _mainCamera.GetComponent<FreeCamera>();
+                freeCam.StopMoving();
 
                 var cameraTransform = _mainCamera.transform;
-                _lastTween = cameraTransform.DOMove(new Vector3(0, 0, cameraTransform.position.z), 0.2f).OnKill(() => _lastTween = null);
+                _lastTween = DOTween.To(() => freeCam.TargetPoint, (val) => freeCam.TargetPoint = val, new Vector3(0, 0, cameraTransform.position.z), 0.2f).OnKill(() => _lastTween = null);
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CrazyGames.Logires.Interfaces;
+using CrazyGames.Logires.Utils;
 
 namespace CrazyGames.Logires
 {
@@ -10,8 +11,9 @@ namespace CrazyGames.Logires
     {
         [SerializeField] private BooleanPin _output = null;
 
-        private static event Action OnSwitch;
+        private static event Action OnSwitch = null;
         private static Coroutine _mainCoroutine = null;
+        private static bool _currentValue = false;
 
         public IReadOnlyList<Pin> Outputs { get => new[] { _output }; }
 
@@ -19,15 +21,11 @@ namespace CrazyGames.Logires
         {
             if (_mainCoroutine == null)
             {
-                _mainCoroutine = StartCoroutine(MainCoroutine());
-            }
-        }
-
-        private void OnApplicationQuit()
-        {
-            if (_mainCoroutine != null)
-            {
-                StopCoroutine(_mainCoroutine);
+                _mainCoroutine = GlobalTicker.Instance.StartDelayed(0.25f, () =>
+                {
+                    _currentValue = !_currentValue;
+                    OnSwitch?.Invoke();
+                });
             }
         }
 
@@ -41,18 +39,22 @@ namespace CrazyGames.Logires
             OnSwitch -= SwitchValue;
         }
 
-        private static IEnumerator MainCoroutine()
+        public static void StopTicker()
         {
-            while (true)
+            if (_mainCoroutine != null)
             {
-                OnSwitch?.Invoke();
-                yield return new WaitForSeconds(0.25f);
+                GlobalTicker.Instance.StopDelayed(_mainCoroutine);
+                _mainCoroutine = null;
             }
         }
 
         private void SwitchValue()
         {
-            _output.Value = !_output.Value;
+            try
+            {
+                _output.Value = _currentValue;
+            }
+            catch { }
         }
 
         public override int GetID() => 5;

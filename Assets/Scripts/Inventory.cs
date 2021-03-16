@@ -6,6 +6,7 @@ using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using CrazyGames.Logires.UI;
 
 namespace CrazyGames.Logires
 {

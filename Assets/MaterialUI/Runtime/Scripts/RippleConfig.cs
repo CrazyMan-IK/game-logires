@@ -186,6 +186,7 @@ namespace MaterialUI
 			{
 				animDeltaTime = Time.realtimeSinceStartup - animStartTime;
 
+				highlightColor.a = thisImage.color.a;
 				if (animDeltaTime < animationDuration)
 				{
 					thisImage.color = Anim.Quint.Out(currentColor, highlightColor, animDeltaTime, animationDuration);
@@ -200,6 +201,7 @@ namespace MaterialUI
 			{
 				animDeltaTime = Time.realtimeSinceStartup - animStartTime;
 
+				normalColor.a = thisImage.color.a;
 				if (animDeltaTime < animationDuration)
 				{
 					thisImage.color = Anim.Quint.Out(currentColor, normalColor, animDeltaTime, animationDuration);
@@ -227,7 +229,7 @@ namespace MaterialUI
 			if (worldSpace)
 				StartCoroutine(DragCheck(theCamera.ScreenToWorldPoint(new Vector3 (data.position.x, data.position.y, Vector3.Distance(theCamera.transform.position, transform.position) - Mathf.Sqrt(Vector2.Distance(data.position, new Vector2(Screen.width / 2f, Screen.height / 2f)))))));
 			else
-				StartCoroutine(DragCheck (data.position));
+				StartCoroutine(DragCheck(data.position));
 
 			if (thisMask && toggleMask)
 				thisMask.enabled = true;
@@ -306,7 +308,7 @@ namespace MaterialUI
 				yield return new WaitForSeconds(scrollDelayCheckTime);
 				if (mousePos.x == Input.mousePosition.x && mousePos.y == Input.mousePosition.y)
 				{
-					MakeInkBlot(pos);
+					MakeInkBlot((Vector2)pos);
 					yield return new WaitForSeconds(scrollDelayCheckTime * 2f);
 					if (hasLifted)
 					{
@@ -318,7 +320,7 @@ namespace MaterialUI
 			}
 			else
 			{
-				MakeInkBlot(pos);
+				MakeInkBlot((Vector2)pos);
 			}
 		}
 
