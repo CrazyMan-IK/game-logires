@@ -364,17 +364,6 @@ namespace IngameDebugConsole
 				commandSuggestionsContainer.gameObject.SetActive( false );
 
 			// Register to UI events
-			commandInputField.onValidateInput += OnValidateCommand;
-			commandInputField.onValueChanged.AddListener( RefreshCommandSuggestions );
-			commandInputField.onEndEdit.AddListener( OnEndEditCommand );
-			searchbar.GetComponent<InputField>().onValueChanged.AddListener( SearchTermChanged );
-			hideButton.onClick.AddListener( HideLogWindow );
-			clearButton.onClick.AddListener( ClearLogs );
-			collapseButton.GetComponent<Button>().onClick.AddListener( CollapseButtonPressed );
-			filterInfoButton.GetComponent<Button>().onClick.AddListener( FilterLogButtonPressed );
-			filterWarningButton.GetComponent<Button>().onClick.AddListener( FilterWarningButtonPressed );
-			filterErrorButton.GetComponent<Button>().onClick.AddListener( FilterErrorButtonPressed );
-			snapToBottomButton.GetComponent<Button>().onClick.AddListener( () => SetSnapToBottom( true ) );
 
 			nullPointerEventData = new PointerEventData( null );
 		}
@@ -405,6 +394,18 @@ namespace IngameDebugConsole
 			//Debug.LogException( new System.IO.EndOfStreamException() );
 			//Debug.LogWarning( "warning" );
 			//Debug.Log( "log" );
+
+			commandInputField.onValidateInput += OnValidateCommand;
+			commandInputField.onValueChanged.AddListener(RefreshCommandSuggestions);
+			commandInputField.onEndEdit.AddListener(OnEndEditCommand);
+			searchbar.GetComponent<InputField>().onValueChanged.AddListener(SearchTermChanged);
+			hideButton.onClick.AddListener(HideLogWindow);
+			clearButton.onClick.AddListener(ClearLogs);
+			collapseButton.GetComponent<Button>().onClick.AddListener(CollapseButtonPressed);
+			filterInfoButton.GetComponent<Button>().onClick.AddListener(FilterLogButtonPressed);
+			filterWarningButton.GetComponent<Button>().onClick.AddListener(FilterWarningButtonPressed);
+			filterErrorButton.GetComponent<Button>().onClick.AddListener(FilterErrorButtonPressed);
+			snapToBottomButton.GetComponent<Button>().onClick.AddListener(() => SetSnapToBottom(true));
 		}
 
 		private void OnDisable()
@@ -421,6 +422,18 @@ namespace IngameDebugConsole
 #endif
 
 			DebugLogConsole.RemoveCommand( "save_logs" );
+
+			commandInputField.onValidateInput -= OnValidateCommand;
+			commandInputField.onValueChanged.RemoveListener(RefreshCommandSuggestions);
+			commandInputField.onEndEdit.RemoveListener(OnEndEditCommand);
+			searchbar.GetComponent<InputField>().onValueChanged.RemoveListener(SearchTermChanged);
+			hideButton.onClick.RemoveListener(HideLogWindow);
+			clearButton.onClick.RemoveListener(ClearLogs);
+			collapseButton.GetComponent<Button>().onClick.RemoveListener(CollapseButtonPressed);
+			filterInfoButton.GetComponent<Button>().onClick.RemoveListener(FilterLogButtonPressed);
+			filterWarningButton.GetComponent<Button>().onClick.RemoveListener(FilterWarningButtonPressed);
+			filterErrorButton.GetComponent<Button>().onClick.RemoveListener(FilterErrorButtonPressed);
+			snapToBottomButton.GetComponent<Button>().onClick.RemoveListener(() => SetSnapToBottom(true));
 		}
 
 		private void Start()
@@ -471,7 +484,7 @@ namespace IngameDebugConsole
 				return;
 #endif
 
-			int queuedLogCount = queuedLogEntries.Count;
+			int queuedLogCount = queuedLogEntries?.Count ?? 0;
 			if( queuedLogCount > 0 )
 			{
 				for( int i = 0; i < queuedLogCount; i++ )

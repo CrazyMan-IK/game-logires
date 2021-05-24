@@ -34,6 +34,11 @@ namespace CrazyGames.Logires
         {
             foreach (var pack in _packs)
             {
+                if (!pack.IsActivated())
+                {
+                    continue;
+                }
+
                 foreach (var block in pack.Blocks)
                 {
                     var tempObject = Instantiate(_containerPrefab, _contentHolder);
@@ -54,7 +59,7 @@ namespace CrazyGames.Logires
 
         public Block GetBlock(int id)
         {
-            return _packs.SelectMany(x => x.Blocks).FirstOrDefault(x => x.GetID() == id);
+            return _packs.Where(x => x.IsActivated()).SelectMany(x => x.Blocks).FirstOrDefault(x => x.GetID() == id);
         }
 
         public BlockUI GetBlockUI<T>() where T : Block

@@ -36,7 +36,7 @@ namespace CrazyGames.Logires.Utils
             _SettingsFile = settingsFile;
         }
 
-        public static void Set(string key, object value)
+        public static void Set<T>(string key, T value) where T : class
         {
             if (StaticUtils.IsPathValid(_SettingsFile, true))
             {
@@ -72,6 +72,11 @@ namespace CrazyGames.Logires.Utils
             }
         }
 
+        public static void SetPrimitive<T>(string key, T value) where T : struct
+        {
+            Set(key, new ValueWrapper<T>(value));
+        }
+
         public static object Get(string key)
         {
             return Get<object>(key, null);
@@ -85,7 +90,15 @@ namespace CrazyGames.Logires.Utils
                 using (StreamReader fileReader = new StreamReader(file))
                 using (JsonReader jsonReader = new JsonTextReader(fileReader))
                 {
-                    var data = JToken.ReadFrom(jsonReader);
+                    JToken data;
+                    try
+                    {
+                        data = JToken.ReadFrom(jsonReader);
+                    }
+                    catch
+                    {
+                        data = JToken.Parse("{}");
+                    }
                     var value = data[key];
 
                     return value?.Value<T>();
@@ -107,6 +120,16 @@ namespace CrazyGames.Logires.Utils
             }
 
             return defaultValue;
+        }
+
+        public static ValueWrapper<T> GetPrimitive<T>(string key) where T : struct
+        {
+            return Get<ValueWrapper<T>>(key);
+        }
+
+        public static ValueWrapper<T> GetPrimitive<T>(string key, T defaultValue) where T : struct
+        {
+            return Get<ValueWrapper<T>>(key, defaultValue);
         }
     }
 }

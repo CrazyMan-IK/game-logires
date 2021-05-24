@@ -11,8 +11,6 @@ namespace CrazyGames.Logires
     {
         protected override void OnUpdate()
         {
-            var currentColor = GetCurrentColor();
-
             bool isConnected = _linkedPins.Count != 0;
 
             if (!IsInput)
@@ -35,23 +33,34 @@ namespace CrazyGames.Logires
                     {
                         pin4.Value = Value;
                     }
-
-                    GetLineRendererOf(linkedPin).endColor = currentColor;
                 }
             }
             else if (IsInput && !isConnected)
             {
                 Value = _defaultValue;
             }
-
-            _renderer.color = currentColor;
-            GetLineRendererOf(this).startColor = currentColor;
         }
 
         private void OnDrawGizmos()
         {
             Gizmos.color = GetCurrentColor();
             Gizmos.DrawSphere(transform.position, 0.1f);
+        }
+
+        protected override void OnValueChangedHandler(double oldValue, double newValue)
+        {
+            var currentColor = GetCurrentColor();
+
+            if (!IsInput)
+            {
+                foreach (var linkedPin in _linkedPins)
+                {
+                    GetLineRendererOf(linkedPin).endColor = currentColor;
+                }
+            }
+
+            _renderer.color = currentColor;
+            GetLineRendererOf(this).startColor = currentColor;
         }
 
         public override Color GetCurrentColor()

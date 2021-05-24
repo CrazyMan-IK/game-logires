@@ -178,17 +178,25 @@ namespace IngameDebugConsole
 		// Smoothly translate the popup to the nearest edge
 		public void OnEndDrag( PointerEventData data )
 		{
-			int screenWidth = Screen.width;
-			int screenHeight = Screen.height;
+			//int screenWidth = Screen.width;
+			//int screenHeight = Screen.height;
+
+			float offsetX = Screen.safeArea.x;
+			float offsetY = Screen.safeArea.y;
+			Vector2 offset = new Vector2(offsetX, offsetY);
+
+			float screenWidth = Screen.safeArea.width;
+			float screenHeight = Screen.safeArea.height;
 
 			Vector3 pos = popupTransform.position;
+			Vector2 offsetedPos = (Vector2)pos + offset;
 
 			// Find distances to all four edges
-			float distToLeft = pos.x;
-			float distToRight = Mathf.Abs( pos.x - screenWidth );
+			float distToLeft = Mathf.Abs(offsetedPos.x);
+			float distToRight = Mathf.Abs(offsetedPos.x - screenWidth );
 
-			float distToBottom = Mathf.Abs( pos.y );
-			float distToTop = Mathf.Abs( pos.y - screenHeight );
+			float distToBottom = Mathf.Abs(offsetedPos.y);
+			float distToTop = Mathf.Abs(offsetedPos.y - screenHeight );
 
 			float horDistance = Mathf.Min( distToLeft, distToRight );
 			float vertDistance = Mathf.Min( distToBottom, distToTop );
@@ -197,20 +205,20 @@ namespace IngameDebugConsole
 			if( horDistance < vertDistance )
 			{
 				if( distToLeft < distToRight )
-					pos = new Vector3( halfSize.x, pos.y, 0f );
+					pos = new Vector3(halfSize.x + offsetX, pos.y, 0f );
 				else
-					pos = new Vector3( screenWidth - halfSize.x, pos.y, 0f );
+					pos = new Vector3( screenWidth - halfSize.x + offsetX, pos.y, 0f );
 
-				pos.y = Mathf.Clamp( pos.y, halfSize.y, screenHeight - halfSize.y );
+				pos.y = Mathf.Clamp( pos.y, halfSize.y + offsetY, screenHeight - halfSize.y + offsetY);
 			}
 			else
 			{
 				if( distToBottom < distToTop )
-					pos = new Vector3( pos.x, halfSize.y, 0f );
+					pos = new Vector3( pos.x, halfSize.y + offsetY, 0f );
 				else
-					pos = new Vector3( pos.x, screenHeight - halfSize.y, 0f );
+					pos = new Vector3( pos.x, screenHeight - halfSize.y + offsetY, 0f );
 
-				pos.x = Mathf.Clamp( pos.x, halfSize.x, screenWidth - halfSize.x );
+				pos.x = Mathf.Clamp( pos.x, halfSize.x + offsetX, screenWidth - halfSize.x + offsetX);
 			}
 
 			// If another smooth movement animation is in progress, cancel it

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f03e93f54c39134eb885aadd1b67afd, type: 3}
   m_Name: SystemPack
   m_EditorClassIdentifier: 
+  _name: system
   _components:
   - {fileID: 194025090443264567, guid: 9c5d21646ce5b01439e0f27e0990cc74, type: 3}
   - {fileID: 8865147866131899123, guid: e172f751a95663a41b6d13b61135dbe3, type: 3}

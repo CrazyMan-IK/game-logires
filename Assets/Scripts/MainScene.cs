@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CrazyGames.Logires.UI;
+using UnityEngine.Localization.Settings;
 
 namespace CrazyGames.Logires
 {
@@ -28,7 +29,7 @@ namespace CrazyGames.Logires
                 ui.OnRequestRename += OpenRenameDialog;
             }
 
-#if UNITY_EDITOR
+#if UNITY_EDITORR
             Application.targetFrameRate = 60;
 #else
             Application.targetFrameRate = -1;
@@ -61,6 +62,16 @@ namespace CrazyGames.Logires
         public void LoadNewSave()
         {
             StartCoroutine(Saver.Instance.LoadScene(-1));
+        }
+
+        public void TestEnLocale()
+        {
+            LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[0];
+        }
+
+        public void TestRuLocale()
+        {
+            LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[1];
         }
     }
 }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f03e93f54c39134eb885aadd1b67afd, type: 3}
   m_Name: IteratorPack
   m_EditorClassIdentifier: 
+  _name: iterator
   _components:
   - {fileID: 1751939257908961259, guid: 432da0a78f3249c46a8db174e5fc7f59, type: 3}
   - {fileID: 1751939257908961259, guid: d573252dc232e724590a019863ee1422, type: 3}

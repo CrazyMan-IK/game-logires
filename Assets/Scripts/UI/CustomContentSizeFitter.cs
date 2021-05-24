@@ -22,6 +22,7 @@ namespace CrazyGames.Logires.UI
         [SerializeField] private RectTransform _fallback = null;
         [SerializeField] private float _minWidth = -1;
         [SerializeField] private float _minHeight = -1;
+        [SerializeField] private RectOffset _padding = new RectOffset();
         [SerializeField] private FitMode _horizontalFit = FitMode.Unconstrained;
         [SerializeField] private FitMode _verticalFit = FitMode.Unconstrained;
 
@@ -49,6 +50,19 @@ namespace CrazyGames.Logires.UI
                 if (_minHeight != value)
                 {
                     _minHeight = value;
+                    SetDirty();
+                }
+            }
+        }
+
+        public RectOffset Padding
+        {
+            get { return _padding; }
+            set
+            {
+                if (_padding != value)
+                {
+                    _padding = value;
                     SetDirty();
                 }
             }
@@ -134,8 +148,8 @@ namespace CrazyGames.Logires.UI
                 size = LayoutUtility.GetPreferredSize(_rect, axis);
             }
 
-            var sWidth = _fallback?.rect.width;
-            var sHeight = _fallback?.rect.height;
+            var sWidth = _fallback?.rect.width - _padding.left - _padding.right;
+            var sHeight = _fallback?.rect.height - _padding.top - _padding.bottom;
 
             if (axis == 0)
             {

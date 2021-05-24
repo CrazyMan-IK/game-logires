@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: $-.--
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -92,13 +92,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 57.25
+  m_fontSize: 8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 8
   m_fontSizeMax: 96
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 3260455266203833239}
   - component: {fileID: 4742273398683558701}
   - component: {fileID: 4306501128509092560}
-  - component: {fileID: 6252473931639690631}
+  - component: {fileID: 2304167503390876789}
   m_Layer: 5
   m_Name: PurchaseItem
   m_TagString: Untagged
@@ -175,7 +175,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 800}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3260455266203833239
 MonoBehaviour:
@@ -230,7 +230,7 @@ MonoBehaviour:
   _titleText: {fileID: 739273556240819644}
   _priceText: {fileID: 946227514885344785}
   _descriptionText: {fileID: 4320709732857095694}
---- !u!114 &6252473931639690631
+--- !u!114 &2304167503390876789
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -239,11 +239,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4845228943279794489}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
+  m_Script: {fileID: 11500000, guid: 28ff36f6442f051449caf9dea69e2e6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 0.75
+  _aspectMode: 2
+  _aspectRatio: 0.75
 --- !u!1 &5321671438781119012
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,8 +311,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: <Unknown>
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2ac28e2f3568e8d47a60879649c97fcf, type: 2}
+  m_sharedMaterial: {fileID: 6325220462333263761, guid: 2ac28e2f3568e8d47a60879649c97fcf, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -378,6 +378,41 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6206715455731141866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8241710524326215141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:6872cc5c42e27bf42ab6a7343352294e
+    m_TableEntryReference:
+      m_KeyId: 59164696576
+      m_Key: 
+    m_FallbackState: 0
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8575675526705782751}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8943197380938904497
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,8 +480,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: <Unknown>
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2ac28e2f3568e8d47a60879649c97fcf, type: 2}
+  m_sharedMaterial: {fileID: 6325220462333263761, guid: 2ac28e2f3568e8d47a60879649c97fcf, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -470,7 +505,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42.95
+  m_fontSize: 8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -549,7 +584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2427791589769182487, guid: c09a07c10bc04b14db8bf3a42a07039c, type: 3}
       propertyPath: m_Name
-      value: Button - Flat
+      value: Purchase
       objectReference: {fileID: 0}
     - target: {fileID: 2427791589780436913, guid: c09a07c10bc04b14db8bf3a42a07039c, type: 3}
       propertyPath: m_SizeDelta.x
@@ -653,7 +688,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2653645939350150953, guid: c09a07c10bc04b14db8bf3a42a07039c, type: 3}
       propertyPath: m_fontSize
-      value: 57.25
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c09a07c10bc04b14db8bf3a42a07039c, type: 3}
@@ -662,3 +697,19 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2427791589780436919, guid: c09a07c10bc04b14db8bf3a42a07039c, type: 3}
   m_PrefabInstance: {fileID: 6039696092500623606}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8241710524326215141 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2427791589769182483, guid: c09a07c10bc04b14db8bf3a42a07039c, type: 3}
+  m_PrefabInstance: {fileID: 6039696092500623606}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8575675526705782751 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2653645939350150953, guid: c09a07c10bc04b14db8bf3a42a07039c, type: 3}
+  m_PrefabInstance: {fileID: 6039696092500623606}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8241710524326215141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

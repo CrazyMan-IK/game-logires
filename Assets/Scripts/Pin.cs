@@ -142,7 +142,7 @@ namespace CrazyGames.Logires
         {
             SetPosition(_mainCamera.ScreenToWorldPoint(eventData.position) - _transform.position);
         }
-        
+
         private Block CheckRecursion(Pin destination)
         {
             if (destination == null)
@@ -165,12 +165,15 @@ namespace CrazyGames.Logires
                     {
                         if (haveInputs.Inputs.Count > 0)
                         {
+                            Block temp = null;
+
                             foreach (var input in haveInputs.Inputs)
                             {
                                 var inPin = input._linkedPins.FirstOrDefault();
-                                lastBlock = CheckRecursion(inPin);
+                                temp = (temp != null ? temp : CheckRecursion(inPin));
                             }
 
+                            lastBlock = temp;
                             continue;
                         }
                     }
@@ -189,7 +192,7 @@ namespace CrazyGames.Logires
 
                                     foreach (var outPin in output._linkedPins)
                                     {
-                                        temp ??= CheckRecursion(outPin);
+                                        temp = (temp != null ? temp : CheckRecursion(outPin));
                                     }
 
                                     lastBlock = temp;
@@ -213,29 +216,29 @@ namespace CrazyGames.Logires
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            var pin1 = eventData.pointerDrag.GetComponent<Pin>();
-            var pin2 = eventData.pointerEnter?.GetComponent<Pin>();
+            var thisPin = eventData.pointerDrag.GetComponent<Pin>();
+            var otherPin = eventData.pointerEnter?.GetComponent<Pin>();
 
-            if (pin2 != null &&
-                pin1.CanConnect(pin2) &&
-                pin2.CanConnect(pin1) &&
+            if (otherPin != null &&
+                thisPin.CanConnect(otherPin) &&
+                otherPin.CanConnect(thisPin) &&
                 eventData.pointerDrag != eventData.pointerEnter &&
                 eventData.pointerDrag.transform.parent != eventData.pointerEnter.transform.parent &&
-                pin1.IsInput != pin2.IsInput)
+                thisPin.IsInput != otherPin.IsInput)
             {
-                Block temp = CheckRecursion(pin2);
+                Block temp = null;//CheckRecursion(otherPin);
 
                 if (temp == null)
                 {
                     if (IsInput)
                     {
                         Disconnect();
-                        _linkedPins.Add(pin2);
-                        SetTarget(pin2.transform);
+                        _linkedPins.Add(otherPin);
+                        SetTarget(otherPin.transform);
                     }
                     else
                     {
-                        _linkedPins.Add(pin2);
+                        _linkedPins.Add(otherPin);
                     }
                 }
             }
@@ -245,29 +248,29 @@ namespace CrazyGames.Logires
         
         public void OnDrop(PointerEventData eventData)
         {
-            var pin1 = eventData.pointerDrag?.GetComponent<Pin>();
-            var pin2 = eventData.pointerEnter?.GetComponent<Pin>();
+            var thisPin = eventData.pointerEnter?.GetComponent<Pin>();
+            var otherPin = eventData.pointerDrag?.GetComponent<Pin>();
 
-            if (pin1 != null && pin2 != null &&
-                pin1.CanConnect(pin2) &&
-                pin2.CanConnect(pin1) &&
+            if (otherPin != null && thisPin != null &&
+                otherPin.CanConnect(thisPin) &&
+                thisPin.CanConnect(otherPin) &&
                 eventData.pointerDrag != eventData.pointerEnter &&
                 eventData.pointerDrag.transform.parent != eventData.pointerEnter.transform.parent &&
-                pin1.IsInput != pin2.IsInput)
+                otherPin.IsInput != thisPin.IsInput)
             {
-                Block temp = CheckRecursion(pin1);
+                Block temp = null;//CheckRecursion(otherPin);
 
                 if (temp == null)
                 {
                     if (IsInput)
                     {
                         Disconnect();
-                        _linkedPins.Add(pin1);
+                        _linkedPins.Add(otherPin);
                         SetTarget(eventData.pointerDrag.transform);
                     }
                     else
                     {
-                        _linkedPins.Add(pin1);
+                        _linkedPins.Add(otherPin);
                     }
                 }
             }
@@ -327,8 +330,11 @@ namespace CrazyGames.Logires
 
         protected void OnValueChanged(T oldValue, T newValue)
         {
+            OnValueChangedHandler(oldValue, newValue);
             ValueChanged?.Invoke(this, oldValue, newValue);
         }
+
+        protected abstract void OnValueChangedHandler(T oldValue, T newValue);
 
         public abstract T GetBaseValue();
         public abstract bool Compare(T x, T y);

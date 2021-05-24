@@ -3,28 +3,31 @@ using System.Linq;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using DG.Tweening;
 using CrazyGames.Logires.UI;
+using CrazyGames.Logires.Utils;
 
 namespace CrazyGames.Logires
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class Store : MonoBehaviour, IStoreListener
     {
-        private readonly string[] _Consumables = { "system_set" };
-        private readonly string[] _NonConsumables = { };
-        private ReadOnlyCollection<string> _AllProducts = null;
-        
         [SerializeField] private Transform _itemsHolder = null;
         [SerializeField] private PurchaseItemUI _purchaseItemPrefab = null;
+        [SerializeField] private List<BlocksPack> _packs = new List<BlocksPack>();
 
         private IStoreController _storeController = null;
         private IExtensionProvider _storeExtensionProvider = null;
         private CanvasGroup _canvasGroup = null;
 
+        private List<string> _consumables = new List<string>();
+        private List<string> _nonConsumables = new List<string>();
         private bool _isOpened = false;
+
+        private IReadOnlyList<string> _AllProducts => _consumables.Concat(_nonConsumables).ToList();
 
         public bool IsOpened
         {
@@ -46,7 +49,7 @@ namespace CrazyGames.Logires
         {
             _canvasGroup = GetComponent<CanvasGroup>();
 
-            _AllProducts = _Consumables.Concat(_NonConsumables).ToList().AsReadOnly();
+            _consumables.AddRange(_packs.Select(x => x.Name + "_set"));
         }
 
         private void Start()
@@ -104,11 +107,11 @@ namespace CrazyGames.Logires
 
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
 
-            foreach (var product in _Consumables)
+            foreach (var product in _consumables)
             {
                 builder.AddProduct(product, ProductType.Consumable);
             }
-            foreach (var product in _NonConsumables)
+            foreach (var product in _nonConsumables)
             {
                 builder.AddProduct(product, ProductType.NonConsumable);
             }
@@ -119,16 +122,6 @@ namespace CrazyGames.Logires
         public bool IsInitialized()
         {
             return _storeController != null && _storeExtensionProvider != null;
-        }
-
-        public void Show()
-        {
-            IsOpened = true;
-        }
-
-        public void Hide()
-        {
-            IsOpened = false;
         }
 
         public void RestorePurchases()
@@ -159,14 +152,25 @@ namespace CrazyGames.Logires
             _storeController = controller;
             _storeExtensionProvider = extensions;
 
-            if (_purchaseItemPrefab != null && _itemsHolder != null)
+            var isSetExp = new Regex(@"(\w+)_set$");
+
+            foreach (var product in controller.products.set)
             {
-                foreach (var product in controller.products.set)
+                var match = isSetExp.Match(product.definition.id);
+                var prefab = _purchaseItemPrefab;
+
+                if (match.Success && match.Groups[1].Success)
                 {
-                    var item = Instantiate(_purchaseItemPrefab, _itemsHolder);
-                    item.Product = product;
-                    item.PurchaseRequest += BuyProduct;
+                    var pack = _packs.Find(x => match.Groups[1].Value == x.Name);
+                    if (pack.CustomPrefab != null)
+                    {
+                        prefab = pack.CustomPrefab;
+                    }
                 }
+
+                var item = Instantiate(prefab, _itemsHolder);
+                item.Product = product;
+                item.PurchaseRequest += BuyProduct;
             }
         }
 
@@ -186,13 +190,22 @@ namespace CrazyGames.Logires
             {
                 Debug.Log($"ProcessPurchase: PASS. Product: '{purchaseEvent.purchasedProduct.definition.id}'");
 
-                switch (purchaseEvent.purchasedProduct.definition.id)
+                var match = Regex.Match(purchaseEvent.purchasedProduct.definition.id, @"(\w+)_set$");
+
+                if (match.Success && match.Groups[1].Success)
                 {
-                    case "system_set":
-                        {
-                            Utils.AndroidNativeWrapper.CallMethod("ShowToast", new object[] { purchaseEvent.purchasedProduct.definition.id, 0 });
-                            break;
-                        }
+                    AndroidNativeWrapper.CallMethod("ShowToast", new object[] { purchaseEvent.purchasedProduct.definition.id, 0 });
+                    EncryptedGlobalPreferences.SetPrimitive($"{match.Value}_activated", true);
+                    EncryptedGlobalPreferences.SetPrimitive($"any_set_activated", true);
+                }
+                else
+                {
+                    /*
+                    switch (purchaseEvent.purchasedProduct.definition.id)
+                    {
+                        
+                    }
+                    */
                 }
             }
             else

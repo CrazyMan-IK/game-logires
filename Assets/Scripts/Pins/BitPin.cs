@@ -80,11 +80,32 @@ namespace CrazyGames.Logires
                 Value = _defaultValue;
             }
         }*/
+        private void OnEnable()
+        {
+            _linkedPins.CollectionChanged += OnPinsCollectionChanged;
+
+            _value = _defaultValue;
+            OnValueChanged(_defaultValue, _defaultValue);
+        }
+
+        private void OnDisable()
+        {
+            _linkedPins.CollectionChanged -= OnPinsCollectionChanged;
+        }
+
+        private void OnPinsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            //if (IsInput)
+            {
+                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+                {
+                    OnValueChanged(Value, Value);
+                }
+            }
+        }
 
         protected override void OnUpdate()
         {
-            var currentColor = GetCurrentColor();
-
             bool isConnected = _linkedPins.Count != 0;
 
             if (!IsInput)
@@ -107,17 +128,12 @@ namespace CrazyGames.Logires
                     {
                         pin4.Value = Value.BitsToDouble();
                     }
-
-                    GetLineRendererOf(linkedPin).endColor = currentColor;
                 }
             }
             else if (IsInput && !isConnected)
             {
                 Value = _defaultValue.GetCopy();
             }
-
-            _renderer.color = currentColor;
-            GetLineRendererOf(this).startColor = currentColor;
         }
 
         private void OnDrawGizmos()
@@ -126,20 +142,30 @@ namespace CrazyGames.Logires
             Gizmos.DrawSphere(transform.position, 0.1f);
         }
 
+        protected override void OnValueChangedHandler(List<bool> oldValue, List<bool> newValue)
+        {
+            var currentColor = GetCurrentColor();
+
+            if (!IsInput)
+            {
+                foreach (var linkedPin in _linkedPins)
+                {
+                    GetLineRendererOf(linkedPin).endColor = currentColor;
+                }
+            }
+
+            _renderer.color = currentColor;
+            GetLineRendererOf(this).startColor = currentColor;
+        }
+
         public override Color GetCurrentColor()
         {
-            //if (Value.Where(x => x).Take(2).Count() == 2) return Color.green;
-            //else if (Value.Where(x => x).Take(2).Count() == 1) return Color.yellow;
-            //return Color.red;
-            //return Value.Any(x => x) ? Color.green : Color.red;
-            var allCount = Mathf.Clamp(Value.Count, 1, int.MaxValue);
-            var enabledCount = Value.Count(x => x);
-            var val1 = 100.0f / allCount;
-            var val2 = val1 * enabledCount;
-            var val3 = val2 / 100.0f;
-            var val4 = Mathf.Clamp(val3, 0, 0.5f).Remap(0, 0.5f, 0, 1);
-            var val5 = Mathf.Clamp(val3, 0.5f, 1).Remap(0.5f, 1, 0, 1);
-            return Color.Lerp(Color.green, Color.Lerp(Color.blue, Color.red, 1 - val4), 1 - val5);
+            if (Value.Count == 1)
+            {
+                return Value[0] ? Color.green : Color.red;
+            }
+
+            return Color.blue;
         }
 
         public override List<bool> GetBaseValue()

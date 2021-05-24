@@ -58,7 +58,12 @@ namespace CrazyGames.Logires.Utils
 
         private void LateUpdate()
         {
-            _mainCameraTransform.position = Vector3.Lerp(_mainCameraTransform.position, TargetPoint, Time.deltaTime * 500);
+            var result = Vector3.Lerp(_mainCameraTransform.position, TargetPoint, Time.deltaTime * 500);
+            result.x = Mathf.Round(result.x * 100) / 100;
+            result.y = Mathf.Round(result.y * 100) / 100;
+            result.z = Mathf.Round(result.z * 100) / 100;
+
+            _mainCameraTransform.position = result;
         }
 
         private void OnMoved(Vector2 delta, CurrentState state)

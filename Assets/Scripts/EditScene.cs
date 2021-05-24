@@ -12,7 +12,7 @@ namespace CrazyGames.Logires
     {
         private void Awake()
         {
-#if UNITY_EDITOR
+#if UNITY_EDITORR
             Application.targetFrameRate = 60;
 #else
             Application.targetFrameRate = -1;
@@ -34,8 +34,6 @@ namespace CrazyGames.Logires
         {
             Saver.Instance.SaveCurrentLevel();
             AndroidNativeWrapper.CallMethod("ShowToast", new object[] { "Level saved", 0 });
-
-            EncryptedGlobalPreferences.Set("Test", 123);
         }
     }
 }

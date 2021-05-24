@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f03e93f54c39134eb885aadd1b67afd, type: 3}
   m_Name: BasePack
   m_EditorClassIdentifier: 
+  _name: base
+  _forceActivated: 1
   _components:
   - {fileID: 9041749155571278876, guid: 67b24ff82e0cd214bbe00cbdcd3ffa89, type: 3}
   - {fileID: 3757100876327444157, guid: 15509709659eccd448b464b186bd54a0, type: 3}

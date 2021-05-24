@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -60,6 +61,9 @@ namespace CrazyGames.Logires.Utils
 
         public static void CallMethod(string name, params object[] arguments)
         {
+#if UNITY_EDITOR
+            Debug.Log($"Native method '{name}', called with arguments [{string.Join(", ", arguments.Select(x => "(" + x + ")"))}]");
+#endif
             if (_androidNativeObject != null)
             {
                 _androidNativeObject.Call(name, arguments);
@@ -68,6 +72,10 @@ namespace CrazyGames.Logires.Utils
 
         public static T CallMethod<T>(string name, T defaultValue, params object[] arguments)
         {
+#if UNITY_EDITOR
+            Debug.Log($"Native method '{name}', called with arguments [{string.Join(", ", arguments.Select(x => "(" + x + ")"))}] and default value '{defaultValue}'");
+#endif
+
             if (_androidNativeObject != null)
             {
                 return _androidNativeObject.Call<T>(name, arguments);

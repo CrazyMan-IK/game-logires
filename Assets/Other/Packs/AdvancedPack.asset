@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f03e93f54c39134eb885aadd1b67afd, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f17aaeadcdbcc44693fd01ad83787df, type: 3}
   m_Name: AdvancedPack
   m_EditorClassIdentifier: 
+  _name: advanced
+  _forceActivated: 0
+  _buyAnyPackToActivate: 1
+  _customPurchaseItemPrefab: {fileID: 4128114884811663614, guid: feee23bbf6895944d8128ea48d448335, type: 3}
   _components:
   - {fileID: 745165171941768859, guid: 1fc4db327da2a7f4b92eb12724e8feec, type: 3}
   - {fileID: 8410630340230620203, guid: 1d5c0f39a6c53034d8c3c141f56d44e3, type: 3}

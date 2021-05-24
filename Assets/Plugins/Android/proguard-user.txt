@@ -1,0 +1,2 @@
+-keep class com.crazy_games.AndroidNative.** { *; }
+-keep class com.yasirkula.unity.* { *; }

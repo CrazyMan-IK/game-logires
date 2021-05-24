@@ -12,7 +12,6 @@ namespace CrazyGames.Logires
         private void OnEnable()
         {
             _linkedPins.CollectionChanged += OnPinsCollectionChanged;
-            ValueChanged += OnThisValueChanged;
 
             _value = _defaultValue;
             OnValueChanged(_defaultValue, _defaultValue);
@@ -21,10 +20,33 @@ namespace CrazyGames.Logires
         private void OnDisable()
         {
             _linkedPins.CollectionChanged -= OnPinsCollectionChanged;
-            ValueChanged -= OnThisValueChanged;
         }
 
-        private void OnThisValueChanged(Pin sender, LinkedListNode<object> oldValue, LinkedListNode<object> newValue)
+        private void OnPinsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                OnValueChanged(Value, Value);
+            }
+        }
+
+        protected override void OnUpdate()
+        {
+            bool isConnected = _linkedPins.Count != 0;
+
+            if (IsInput && !isConnected)
+            {
+                Value = _defaultValue;
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = GetCurrentColor();
+            Gizmos.DrawSphere(transform.position, 0.1f);
+        }
+
+        protected override void OnValueChangedHandler(LinkedListNode<object> oldValue, LinkedListNode<object> newValue)
         {
             var currentColor = GetCurrentColor();
 
@@ -63,42 +85,6 @@ namespace CrazyGames.Logires
 
             _renderer.color = currentColor;
             GetLineRendererOf(this).startColor = currentColor;
-        }
-
-        private void OnPinsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            {
-                OnValueChanged(Value, Value);
-            }
-        }
-
-        protected override void OnUpdate()
-        {
-            var currentColor = GetCurrentColor();
-
-            bool isConnected = _linkedPins.Count != 0;
-
-            if (!IsInput)
-            {
-                foreach (var linkedPin in _linkedPins)
-                {
-                    GetLineRendererOf(linkedPin).endColor = currentColor;
-                }
-            }
-            else if (IsInput && !isConnected)
-            {
-                Value = _defaultValue;
-            }
-
-            _renderer.color = currentColor;
-            GetLineRendererOf(this).startColor = currentColor;
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = GetCurrentColor();
-            Gizmos.DrawSphere(transform.position, 0.1f);
         }
 
         public override Color GetCurrentColor()

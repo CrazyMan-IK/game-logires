@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Base_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 6872cc5c42e27bf42ab6a7343352294e, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 59164696576
+    m_Localized: Purchase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1439122979659776
+    m_Localized: System pack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1439362868682752
+    m_Localized: A system pack that includes blocks of communication with the system
+      (Getting battery charge, changing the current volume level, etc.)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1749728576249856
+    m_Localized: Advanced pack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1749689153986560
+    m_Localized: Advanced pack containing support blocks (View current value, generator,
+      etc.)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3247149122691072
+    m_Localized: Iterator pack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3247054083956736
+    m_Localized: The "Iterator" set contains blocks for interacting with enumerating
+      elements (Range generator, move next, etc.)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3251086814978048
+    m_Localized: With the purchase of any pack, an "Advanced Pack" is also given
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3561221332508672
+    m_Localized: +30 Min
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3561371979325440
+    m_Localized: Details
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

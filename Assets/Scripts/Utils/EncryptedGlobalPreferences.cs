@@ -27,11 +27,16 @@ namespace CrazyGames.Logires.Utils
             _password = password;
         }
 
-        public static void Set(string key, object value)
+        public static void Set<T>(string key, T value) where T : class
         {
             var encrypted = AesEncryptor.Encrypt(_password, JsonConvert.SerializeObject(value));
 
             GlobalPreferences.Set(key, encrypted);
+        }
+
+        public static void SetPrimitive<T>(string key, T value) where T : struct
+        {
+            Set(key, new ValueWrapper<T>(value));
         }
 
         public static object Get(string key)
@@ -41,7 +46,12 @@ namespace CrazyGames.Logires.Utils
 
         public static T Get<T>(string key) where T : class
         {
-            var data = GlobalPreferences.Get(key, "");
+            var data = GlobalPreferences.Get<string>(key, null);
+            
+            if (data == null)
+            {
+                return null;
+            }
 
             var decrypted = AesEncryptor.Decrypt(_password, data);
 
@@ -58,6 +68,16 @@ namespace CrazyGames.Logires.Utils
             }
 
             return defaultValue;
+        }
+
+        public static ValueWrapper<T> GetPrimitive<T>(string key) where T : struct
+        {
+            return Get<ValueWrapper<T>>(key);
+        }
+
+        public static ValueWrapper<T> GetPrimitive<T>(string key, T defaultValue) where T : struct
+        {
+            return Get<ValueWrapper<T>>(key, defaultValue);
         }
     }
 }
